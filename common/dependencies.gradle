@@ -1,0 +1,67 @@
+/*
+ * Copyright 2018 Arthur Ivanets, arthur.ivanets.l@gmail.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply from: "../common/constants.gradle"
+
+
+ext {
+    // Android Core
+    androidCoreDependencies = dependencies([
+        kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+        appCompat: "androidx.appcompat:appcompat:${rootProject.supportVersion}",
+        coreKtx: "androidx.core:core-ktx:${rootProject.coreVersion}"
+    ])
+
+    // Rx Java
+    rxJavaDependencies = dependencies([
+        rxJava: "io.reactivex.rxjava2:rxjava:${rootProject.rxJavaVersion}",
+        rxAndroid: "io.reactivex.rxjava2:rxandroid:${rootProject.rxAndroidVersion}"
+    ])
+
+    // Retrofit
+    retrofitDependencies = dependencies([
+        retrofit: "com.squareup.retrofit2:retrofit:${rootProject.retrofitVersion}",
+        retrofitRxJava: "com.squareup.retrofit2:adapter-rxjava2:${rootProject.retrofitVersion}"
+    ])
+
+    // OkHttp
+    okHttpDependencies = dependencies([
+        okHttp: "com.squareup.okhttp3:okhttp:${rootProject.okHttpVersion}",
+        okHttpInterceptor: "com.squareup.okhttp3:logging-interceptor:${rootProject.okHttpVersion}"
+    ])
+
+    // RxBus
+    rxBusDependencies = dependencies([
+        rxBus: "com.arthurivanets.rxbus:rxbus:${rootProject.rxBusVersion}",
+        rxBusAndroid: "com.arthurivanets.rxbus:rxbus-android:${rootProject.rxBusVersion}"
+    ])
+
+    // Unit Testing
+    unitTestingDependencies = dependencies([
+        jUnit: "junit:junit:${rootProject.jUnitVersion}"
+    ])
+
+    // Instrumentation Testing
+    instrumentationTestingDependencies = dependencies([
+        runner: "androidx.test:runner:${rootProject.testRunnerVersion}",
+        espresso: "androidx.test.espresso:espresso-core:${rootProject.espressoVersion}"
+    ])
+}
+
+
+private def static dependencies(dependenciesMap) {
+    return dependenciesMap.values()
+}
