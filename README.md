@@ -3,7 +3,7 @@
 ----
 
 [ ![Download](https://api.bintray.com/packages/arthurimsacc/maven/commons-core/images/download.svg) ](https://bintray.com/arthurimsacc/maven/commons-core/_latestVersion)
-![](https://travis-ci.org/arthur3486/android-common.svg?branch=master)
+![](https://travis-ci.org/arthur3486/android-commons.svg?branch=master)
 
 ----
 
