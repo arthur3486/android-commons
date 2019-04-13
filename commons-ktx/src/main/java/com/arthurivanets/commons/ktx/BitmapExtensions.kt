@@ -27,6 +27,28 @@ import java.io.FileOutputStream
 
 
 /**
+ *
+ */
+@get:JvmName("getSuggestedScalingType")
+val Bitmap.suggestedScalingType : ScalingType
+    get() = (if(this.isInPortrait) ScalingType.HEIGHT_BASED else ScalingType.WIDTH_BASED)
+
+/**
+ *
+ */
+@get:JvmName("isInPortrait")
+val Bitmap.isInPortrait : Boolean
+    get() = (this.height > this.width)
+
+/**
+ *
+ */
+@get:JvmName("isInLandscape")
+val Bitmap.isInLandscape : Boolean
+    get() = (this.width > height)
+
+
+/**
  * Saves the [Bitmap] into a specified output [File].
  *
  * @param compressFormat the exact format of the compressed image (see [Bitmap.CompressFormat])
@@ -51,7 +73,7 @@ fun Bitmap.save(compressFormat : Bitmap.CompressFormat,
 
 
 /**
- * Resizes the current [Bitmap] based on the specified desired width (Resize Type: [ResizeType.WIDTH_BASED]).
+ * Resizes the current [Bitmap] based on the specified desired width (Resize Type: [ScalingType.WIDTH_BASED]).
  *
  * @param desiredWidth the exact width to base the resizing of the bitmap upon
  * @param recycleOriginal whether to recycle the original [Bitmap] after the completion of the resizing operation
@@ -59,7 +81,7 @@ fun Bitmap.save(compressFormat : Bitmap.CompressFormat,
  */
 fun Bitmap.resizeWidthBased(desiredWidth : Int, recycleOriginal : Boolean = true) : Bitmap {
     return resize(
-        resizeType = ResizeType.WIDTH_BASED,
+        scalingType = ScalingType.WIDTH_BASED,
         value = desiredWidth,
         recycleOriginal = recycleOriginal
     )
@@ -67,7 +89,7 @@ fun Bitmap.resizeWidthBased(desiredWidth : Int, recycleOriginal : Boolean = true
 
 
 /**
- * Resizes the current [Bitmap] based on the specified desired height (Resize Type: [ResizeType.HEIGHT_BASED]).
+ * Resizes the current [Bitmap] based on the specified desired height (Resize Type: [ScalingType.HEIGHT_BASED]).
  *
  * @param desiredHeight the exact height to base the resizing of the bitmap upon
  * @param recycleOriginal whether to recycle the original [Bitmap] after the completion of the resizing operation
@@ -75,7 +97,7 @@ fun Bitmap.resizeWidthBased(desiredWidth : Int, recycleOriginal : Boolean = true
  */
 fun Bitmap.resizeHeightBased(desiredHeight : Int, recycleOriginal : Boolean = true) : Bitmap {
     return resize(
-        resizeType = ResizeType.HEIGHT_BASED,
+        scalingType = ScalingType.HEIGHT_BASED,
         value = desiredHeight,
         recycleOriginal = recycleOriginal
     )
@@ -83,29 +105,30 @@ fun Bitmap.resizeHeightBased(desiredHeight : Int, recycleOriginal : Boolean = tr
 
 
 /**
- * Resizes the current [Bitmap] based on the specified [ResizeType] and the corresponding value.
+ * Resizes the current [Bitmap] based on the specified [ScalingType] and the corresponding value.
  *
- * @param resizeType the exact resize type which determines which property the resizing is to be based upon
- * @param value the value to base the resizing upon (either the width or height, depending on the specified [ResizeType])
+ * @param scalingType the exact resize type which determines which property the resizing is to be based upon
+ * @param value the value to base the resizing upon (either the width or height, depending on the specified [ScalingType])
  * @param recycleOriginal whether to recycle the original [Bitmap] after the completion of the resizing operation
  * @return the actual resized [Bitmap]
  */
-fun Bitmap.resize(resizeType : ResizeType,
+fun Bitmap.resize(scalingType : ScalingType,
                   value : Int,
                   recycleOriginal : Boolean = true) : Bitmap {
-    if(((ResizeType.WIDTH_BASED == resizeType) && (this.width == value))
-        || ((ResizeType.HEIGHT_BASED == resizeType) && (this.height == value))) {
+    if(((ScalingType.WIDTH_BASED == scalingType) && (this.width == value))
+        || ((ScalingType.HEIGHT_BASED == scalingType) && (this.height == value))) {
         return this
     }
 
-    val ratio = (if(ResizeType.WIDTH_BASED == resizeType) (value * 1f / this.width) else (value * 1f / this.height))
-    val newWidth = (this.width * ratio).toInt()
-    val newHeight = (this.height * ratio).toInt()
+    val newSize = this.getScaledSize(
+        scalingType = scalingType,
+        value = value
+    )
 
     val createdBitmap = Bitmap.createScaledBitmap(
         this,
-        newWidth,
-        newHeight,
+        newSize.width,
+        newSize.height,
         true
     )
 
@@ -240,11 +263,33 @@ fun BitmapFactory.Options.calculateInSampleSize(desiredWidth : Int, desiredHeigh
 
 
 /**
- * A set of Resize Types for [Bitmap] resizing related purposes.
+ *
  */
-enum class ResizeType {
+fun Bitmap.getScaledSize(scalingType : ScalingType, value : Int) : Size {
+    val ratio = (if(ScalingType.WIDTH_BASED == scalingType) (value * 1f / this.width) else (value * 1f / this.height))
+
+    return Size(
+        width = (this.width * ratio).toInt(),
+        height = (this.height * ratio).toInt()
+    )
+}
+
+
+/**
+ * A set of Scaling Types for [Bitmap] scaling related purposes.
+ */
+enum class ScalingType {
 
     WIDTH_BASED,
     HEIGHT_BASED
 
 }
+
+
+/**
+ *
+ */
+class Size(
+    val width : Int = 0,
+    val height : Int = 0
+)
