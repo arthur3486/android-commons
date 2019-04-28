@@ -72,6 +72,32 @@ val Context.appMoviesDirectory : File
 val Context.appDocumentsDirectory : File
     get() = (getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) ?: throw FileNotFoundException("App Documents Directory Not Found."))
 
+/**
+ *
+ */
+@get:JvmName("getStatusBarSize")
+val Context.statusBarSize : Int
+    get() = this.resources.let {
+        it.getDimensionPixelSize(it.getIdentifier(
+            "status_bar_height",
+            "dimen",
+            "android"
+        ))
+    }
+
+/**
+ *
+ */
+@get:JvmName("getNavigationBarSize")
+val Context.navigationBarSize : Int
+    get() = this.resources.let {
+        it.getDimensionPixelSize(it.getIdentifier(
+            "navigation_bar_height",
+            "dimen",
+            "android"
+        ))
+    }
+
 
 /**
  *
