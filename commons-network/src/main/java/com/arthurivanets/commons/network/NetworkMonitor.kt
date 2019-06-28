@@ -27,6 +27,8 @@ import com.arthurivanets.rxbus.EventSource
 interface NetworkMonitor : EventSource<NetworkEvent<*>> {
 
 
+    val isEnabled : Boolean
+
     /**
      *
      */

@@ -53,16 +53,25 @@ class NetworkMonitorImpl(
 
     private val callbackRegistry = CallbackRegistry()
 
+    override var isEnabled = false
+        private set
+
 
     @RequiresPermission(Permissions.ACCESS_NETWORK_STATE)
     override fun enable() {
-        applicationContext.connectivityManager.registerNetworkCallback(networkRequest, this)
+        if(!isEnabled) {
+            applicationContext.connectivityManager.registerNetworkCallback(networkRequest, this)
+            isEnabled = true
+        }
     }
 
 
     @RequiresPermission(Permissions.ACCESS_NETWORK_STATE)
     override fun disable() {
-        applicationContext.connectivityManager.unregisterNetworkCallback(this)
+        if(isEnabled) {
+            applicationContext.connectivityManager.unregisterNetworkCallback(this)
+            isEnabled = false
+        }
     }
 
 
@@ -82,28 +91,26 @@ class NetworkMonitorImpl(
 
 
     @RequiresPermission(Permissions.ACCESS_NETWORK_STATE)
-    override fun onCapabilitiesChanged(network : Network?, networkCapabilities : NetworkCapabilities?) {
+    override fun onCapabilitiesChanged(network : Network, networkCapabilities : NetworkCapabilities) {
         super.onCapabilitiesChanged(network, networkCapabilities)
 
-        networkCapabilities?.let {
-            if(it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-                reportNetworkCapabilitiesChange(NetCapabilities(
-                    linkDownstreamBandwidthKbps = it.linkDownstreamBandwidthKbps,
-                    linkUpstreamBandwidthKbps = it.linkUpstreamBandwidthKbps,
-                    isNetworkAvailable = applicationContext.isNetworkConnected,
-                    isNetworkMetered = applicationContext.isNetworkConnectionMetered,
-                    isRestricted = it.isRestricted,
-                    isTrusted = it.isTrusted,
-                    isVpn = it.isVpn,
-                    isValidated = it.isValidated
-                ))
-            }
+        if(networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+            reportNetworkCapabilitiesChange(NetCapabilities(
+                linkDownstreamBandwidthKbps = networkCapabilities.linkDownstreamBandwidthKbps,
+                linkUpstreamBandwidthKbps = networkCapabilities.linkUpstreamBandwidthKbps,
+                isNetworkAvailable = applicationContext.isNetworkConnected,
+                isNetworkMetered = applicationContext.isNetworkConnectionMetered,
+                isRestricted = networkCapabilities.isRestricted,
+                isTrusted = networkCapabilities.isTrusted,
+                isVpn = networkCapabilities.isVpn,
+                isValidated = networkCapabilities.isValidated
+            ))
         }
     }
 
 
     @SuppressWarnings("MissingPermission")
-    override fun onAvailable(network : Network?) {
+    override fun onAvailable(network : Network) {
         super.onAvailable(network)
 
         reportNetworkStateChange(NetState(
@@ -114,7 +121,7 @@ class NetworkMonitorImpl(
 
 
     @SuppressWarnings("MissingPermission")
-    override fun onLost(network : Network?) {
+    override fun onLost(network : Network) {
         super.onLost(network)
 
         reportNetworkStateChange(NetState(

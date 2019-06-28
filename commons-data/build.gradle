@@ -49,6 +49,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation androidCoreDependencies
+    implementation rxJavaDependencies
     implementation rxBusDependencies
 
     implementation project(":commons")
