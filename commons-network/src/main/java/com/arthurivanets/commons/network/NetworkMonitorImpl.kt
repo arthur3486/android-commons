@@ -38,7 +38,7 @@ import io.reactivex.functions.Consumer
  *
  */
 @RequiresApi(SdkVersions.LOLLIPOP)
-class NetworkMonitorImpl(
+internal class NetworkMonitorImpl(
     context : Context,
     transportTypes : Set<Int> = DEFAULT_TRANSPORT_TYPES
 ) : NetworkMonitor, ConnectivityManager.NetworkCallback() {
