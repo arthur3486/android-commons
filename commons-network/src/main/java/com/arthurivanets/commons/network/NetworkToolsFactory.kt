@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
+@file:JvmName("NetworkToolsFactory")
+
 package com.arthurivanets.commons.network
 
 import android.content.Context
 import androidx.annotation.RequiresApi
 import com.arthurivanets.commons.SdkVersions
 
+
 /**
  *
  */
-object NetworkToolsFactory {
+@RequiresApi(SdkVersions.LOLLIPOP)
+fun Context.createNetworkMonitor() : NetworkMonitor {
+    return NetworkMonitorImpl(this.applicationContext)
+}
 
 
-    @RequiresApi(SdkVersions.LOLLIPOP)
-    @JvmStatic fun createNetworkMonitor(context : Context) : NetworkMonitor {
-        return NetworkMonitorImpl(context.applicationContext)
-    }
-
-
-    @JvmStatic fun createNetworkStateProvider(context : Context) : NetworkStateProvider {
-        return NetworkStateProviderImpl(context.applicationContext)
-    }
-
-
+/**
+ *
+ */
+fun Context.createNetworkStateProvider() : NetworkStateProvider {
+    return NetworkStateProviderImpl(this.applicationContext)
 }

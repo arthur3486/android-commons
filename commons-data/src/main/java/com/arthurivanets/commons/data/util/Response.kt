@@ -43,14 +43,14 @@ data class Response<R, E : Throwable>(
         /**
          *
          */
-        @JvmStatic fun <R> result(result : R) : Response<R, Throwable> {
+        @JvmStatic fun <R> result(result : R?) : Response<R, Throwable> {
             return Response(result = result)
         }
 
         /**
          *
          */
-        @JvmStatic fun <R> error(error : Throwable) : Response<R, Throwable> {
+        @JvmStatic fun <R> error(error : Throwable?) : Response<R, Throwable> {
             return Response(error = error)
         }
 
