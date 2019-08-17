@@ -17,6 +17,7 @@
 package com.arthurivanets.commons.data.util
 
 import java.util.concurrent.TimeUnit
+import kotlin.math.pow
 
 /**
  *
@@ -55,7 +56,7 @@ object DelayCreators {
         return DelayCreator(
             baseDelayInSeconds = baseDelayInSeconds,
             outTimeUnit = outTimeUnit,
-            creator = { outTimeUnit.convert(Math.pow(baseDelayInSeconds.toDouble(), it.toDouble()).toLong(), TimeUnit.SECONDS) }
+            creator = { outTimeUnit.convert(baseDelayInSeconds.toDouble().pow(it.toDouble()).toLong(), TimeUnit.SECONDS) }
         )
     }
 
