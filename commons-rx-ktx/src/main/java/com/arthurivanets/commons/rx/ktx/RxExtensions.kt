@@ -18,6 +18,7 @@
 
 package com.arthurivanets.commons.rx.ktx
 
+import com.arthurivanets.commons.rx.schedulers.SchedulerProvider
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
@@ -28,7 +29,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  *
  */
-inline fun <T> Observable<T>.also(crossinline action : (T) -> Unit) : Observable<T> {
+inline fun <T> Observable<T>.alsoDo(crossinline action : (T) -> Unit) : Observable<T> {
     return this.flatMap {
         action(it)
         return@flatMap it.asObservable()
@@ -39,7 +40,7 @@ inline fun <T> Observable<T>.also(crossinline action : (T) -> Unit) : Observable
 /**
  *
  */
-inline fun <T> Flowable<T>.also(crossinline action : (T) -> Unit) : Flowable<T> {
+inline fun <T> Flowable<T>.alsoDo(crossinline action : (T) -> Unit) : Flowable<T> {
     return this.flatMap {
         action(it)
         return@flatMap it.asFlowable()
@@ -50,7 +51,7 @@ inline fun <T> Flowable<T>.also(crossinline action : (T) -> Unit) : Flowable<T> 
 /**
  *
  */
-inline fun <T> Single<T>.also(crossinline action : (T) -> Unit) : Single<T> {
+inline fun <T> Single<T>.alsoDo(crossinline action : (T) -> Unit) : Single<T> {
     return this.flatMap {
         action(it)
         return@flatMap it.asSingle()
@@ -61,7 +62,7 @@ inline fun <T> Single<T>.also(crossinline action : (T) -> Unit) : Single<T> {
 /**
  *
  */
-inline fun <T> Maybe<T>.also(crossinline action : (T) -> Unit) : Maybe<T> {
+inline fun <T> Maybe<T>.alsoDo(crossinline action : (T) -> Unit) : Maybe<T> {
     return this.flatMap {
         action(it)
         return@flatMap it.asMaybe()
@@ -144,6 +145,46 @@ fun Completable.subscribeOnIO() : Completable {
 /**
  *
  */
+fun <T> Observable<T>.subscribeOnComputation() : Observable<T> {
+    return this.subscribeOn(Schedulers.computation())
+}
+
+
+/**
+ *
+ */
+fun <T> Flowable<T>.subscribeOnComputation() : Flowable<T> {
+    return this.subscribeOn(Schedulers.computation())
+}
+
+
+/**
+ *
+ */
+fun <T> Single<T>.subscribeOnComputation() : Single<T> {
+    return this.subscribeOn(Schedulers.computation())
+}
+
+
+/**
+ *
+ */
+fun <T> Maybe<T>.subscribeOnComputation() : Maybe<T> {
+    return this.subscribeOn(Schedulers.computation())
+}
+
+
+/**
+ *
+ */
+fun Completable.subscribeOnComputation() : Completable {
+    return this.subscribeOn(Schedulers.computation())
+}
+
+
+/**
+ *
+ */
 fun <T> Observable<T>.observeOnUI() : Observable<T> {
     return this.observeOn(AndroidSchedulers.mainThread())
 }
@@ -184,7 +225,97 @@ fun Completable.observeOnUI() : Completable {
 /**
  *
  */
-fun <T> Observable<T>.typicalBackgroundWorkSchedulers() : Observable<T> {
+fun <T> Observable<T>.applyIOWorkSchedulers(schedulerProvider : SchedulerProvider) : Observable<T> {
+    return this.subscribeOn(schedulerProvider.io)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun <T> Flowable<T>.applyIOWorkSchedulers(schedulerProvider : SchedulerProvider) : Flowable<T> {
+    return this.subscribeOn(schedulerProvider.io)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun <T> Single<T>.applyIOWorkSchedulers(schedulerProvider : SchedulerProvider) : Single<T> {
+    return this.subscribeOn(schedulerProvider.io)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun <T> Maybe<T>.applyIOWorkSchedulers(schedulerProvider : SchedulerProvider) : Maybe<T> {
+    return this.subscribeOn(schedulerProvider.io)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun Completable.applyIOWorkSchedulers(schedulerProvider : SchedulerProvider) : Completable {
+    return this.subscribeOn(schedulerProvider.io)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun <T> Observable<T>.applyCPUWorkSchedulers(schedulerProvider : SchedulerProvider) : Observable<T> {
+    return this.subscribeOn(schedulerProvider.computation)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun <T> Flowable<T>.applyCPUWorkSchedulers(schedulerProvider : SchedulerProvider) : Flowable<T> {
+    return this.subscribeOn(schedulerProvider.computation)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun <T> Single<T>.applyCPUWorkSchedulers(schedulerProvider : SchedulerProvider) : Single<T> {
+    return this.subscribeOn(schedulerProvider.computation)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun <T> Maybe<T>.applyCPUWorkSchedulers(schedulerProvider : SchedulerProvider) : Maybe<T> {
+    return this.subscribeOn(schedulerProvider.computation)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun Completable.applyCPUWorkSchedulers(schedulerProvider : SchedulerProvider) : Completable {
+    return this.subscribeOn(schedulerProvider.computation)
+        .observeOn(schedulerProvider.ui)
+}
+
+
+/**
+ *
+ */
+fun <T> Observable<T>.applyIOWorkSchedulers() : Observable<T> {
     return this.subscribeOnIO()
         .observeOnUI()
 }
@@ -193,7 +324,7 @@ fun <T> Observable<T>.typicalBackgroundWorkSchedulers() : Observable<T> {
 /**
  *
  */
-fun <T> Flowable<T>.typicalBackgroundWorkSchedulers() : Flowable<T> {
+fun <T> Flowable<T>.applyIOWorkSchedulers() : Flowable<T> {
     return this.subscribeOnIO()
         .observeOnUI()
 }
@@ -202,7 +333,7 @@ fun <T> Flowable<T>.typicalBackgroundWorkSchedulers() : Flowable<T> {
 /**
  *
  */
-fun <T> Single<T>.typicalBackgroundWorkSchedulers() : Single<T> {
+fun <T> Single<T>.applyIOWorkSchedulers() : Single<T> {
     return this.subscribeOnIO()
         .observeOnUI()
 }
@@ -211,7 +342,7 @@ fun <T> Single<T>.typicalBackgroundWorkSchedulers() : Single<T> {
 /**
  *
  */
-fun <T> Maybe<T>.typicalBackgroundWorkSchedulers() : Maybe<T> {
+fun <T> Maybe<T>.applyIOWorkSchedulers() : Maybe<T> {
     return this.subscribeOnIO()
         .observeOnUI()
 }
@@ -220,8 +351,53 @@ fun <T> Maybe<T>.typicalBackgroundWorkSchedulers() : Maybe<T> {
 /**
  *
  */
-fun Completable.typicalBackgroundWorkSchedulers() : Completable {
+fun Completable.applyIOWorkSchedulers() : Completable {
     return this.subscribeOnIO()
+        .observeOnUI()
+}
+
+
+/**
+ *
+ */
+fun <T> Observable<T>.applyCPUWorkSchedulers() : Observable<T> {
+    return this.subscribeOnComputation()
+        .observeOnUI()
+}
+
+
+/**
+ *
+ */
+fun <T> Flowable<T>.applyCPUWorkSchedulers() : Flowable<T> {
+    return this.subscribeOnComputation()
+        .observeOnUI()
+}
+
+
+/**
+ *
+ */
+fun <T> Single<T>.applyCPUWorkSchedulers() : Single<T> {
+    return this.subscribeOnComputation()
+        .observeOnUI()
+}
+
+
+/**
+ *
+ */
+fun <T> Maybe<T>.applyCPUWorkSchedulers() : Maybe<T> {
+    return this.subscribeOnComputation()
+        .observeOnUI()
+}
+
+
+/**
+ *
+ */
+fun Completable.applyCPUWorkSchedulers() : Completable {
+    return this.subscribeOnComputation()
         .observeOnUI()
 }
 

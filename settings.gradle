@@ -1,6 +1,7 @@
 include ":app"
 include ":commons"
 include ":commons-ktx"
+include ":commons-rx"
 include ":commons-rx-ktx"
 include ":commons-network"
 include ":commons-data"

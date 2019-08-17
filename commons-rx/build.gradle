@@ -55,19 +55,16 @@ dependencies {
 
     implementation androidCoreDependencies
     implementation rxJavaDependencies
-    implementation rxBusDependencies
-
-    implementation project(":commons")
 
     testImplementation unitTestingDependencies
     androidTestImplementation instrumentationTestingDependencies
 }
 
 ext {
-    releaseArtifact = "commons-data"
+    releaseArtifact = "commons-rx"
     releaseDescription = ""
 }
 
-project.archivesBaseName = "commons-data"
+project.archivesBaseName = "commons-rx"
 
 apply from: "../gradle/script/publish.gradle"

@@ -43,6 +43,11 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -50,6 +55,8 @@ dependencies {
 
     implementation androidCoreDependencies
     implementation rxJavaDependencies
+
+    implementation project(":commons-rx")
 
     testImplementation unitTestingDependencies
     androidTestImplementation instrumentationTestingDependencies

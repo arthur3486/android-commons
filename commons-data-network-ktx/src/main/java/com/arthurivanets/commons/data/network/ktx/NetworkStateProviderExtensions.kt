@@ -18,11 +18,10 @@
 
 package com.arthurivanets.commons.data.network.ktx
 
+import com.arthurivanets.commons.data.rx.ktx.flatMapOrError
 import com.arthurivanets.commons.data.util.Response
 import com.arthurivanets.commons.data.util.errorOrDefault
-import com.arthurivanets.commons.data.rx.ktx.flatMapOrError
 import com.arthurivanets.commons.network.NetworkStateProvider
-import com.arthurivanets.commons.rx.ktx.typicalBackgroundWorkSchedulers
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -35,7 +34,6 @@ import io.reactivex.Single
 fun <T> NetworkStateProvider.ifNetworkAvailable(observable : Observable<T>) : Observable<T> {
     return Observable.just(getNetworkAvailability())
         .flatMapOrError { observable }
-        .typicalBackgroundWorkSchedulers()
 }
 
 
@@ -45,7 +43,6 @@ fun <T> NetworkStateProvider.ifNetworkAvailable(observable : Observable<T>) : Ob
 fun <T> NetworkStateProvider.ifNetworkAvailable(flowable : Flowable<T>) : Flowable<T> {
     return Flowable.just(getNetworkAvailability())
         .flatMapOrError { flowable }
-        .typicalBackgroundWorkSchedulers()
 }
 
 
@@ -55,7 +52,6 @@ fun <T> NetworkStateProvider.ifNetworkAvailable(flowable : Flowable<T>) : Flowab
 fun <T> NetworkStateProvider.ifNetworkAvailable(single : Single<T>) : Single<T> {
     return Single.just(getNetworkAvailability())
         .flatMapOrError { single }
-        .typicalBackgroundWorkSchedulers()
 }
 
 
@@ -65,7 +61,6 @@ fun <T> NetworkStateProvider.ifNetworkAvailable(single : Single<T>) : Single<T> 
 fun <T> NetworkStateProvider.ifNetworkAvailable(maybe : Maybe<T>) : Maybe<T> {
     return Maybe.just(getNetworkAvailability())
         .flatMapOrError { maybe }
-        .typicalBackgroundWorkSchedulers()
 }
 
 
