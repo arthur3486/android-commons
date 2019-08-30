@@ -45,8 +45,7 @@ ext {
 
     // RxBus
     rxBusDependencies = dependencies([
-        rxBus: "com.arthurivanets.rxbus:rxbus:${rootProject.rxBusVersion}",
-        rxBusAndroid: "com.arthurivanets.rxbus:rxbus-android:${rootProject.rxBusVersion}"
+        rxBus: "com.arthurivanets.rxbus:rxbus:${rootProject.rxBusVersion}"
     ])
 
     // Unit Testing

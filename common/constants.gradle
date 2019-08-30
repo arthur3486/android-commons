@@ -26,15 +26,15 @@ project.ext {
     espressoVersion = "3.1.1"
     rxJavaVersion = "2.2.11"
     rxAndroidVersion = "2.1.1"
-    rxBusVersion = "1.0.1"
+    rxBusVersion = "1.1.0"
     retrofitVersion = "2.6.1"
-    okHttpVersion = "4.0.1"
+    okHttpVersion = "4.1.0"
 
     releaseRepoName = "maven"
     releaseUserOrg = "arthurlabs"
     releaseGroupId = "com.arthurivanets.commons"
-    releaseVersion = "0.4.0"
-    releaseVersionCode = 11
+    releaseVersion = "0.5.0"
+    releaseVersionCode = 13
     releaseWebsite = "https://github.com/arthur3486/android-commons"
     releaseLicense = ["Apache-2.0"]
 

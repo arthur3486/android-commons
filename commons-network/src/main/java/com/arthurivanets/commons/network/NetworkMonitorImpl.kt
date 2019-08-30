@@ -30,9 +30,10 @@ import com.arthurivanets.commons.network.events.NetCapabilities
 import com.arthurivanets.commons.network.events.NetState
 import com.arthurivanets.commons.network.events.NetworkEvent
 import com.arthurivanets.commons.network.util.*
-import com.arthurivanets.rxbus.android.AndroidRxBus
+import com.arthurivanets.rxbus.RxBusFactory
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
+import io.reactivex.subjects.PublishSubject
 
 /**
  *
@@ -44,7 +45,7 @@ internal class NetworkMonitorImpl(
 ) : NetworkMonitor, ConnectivityManager.NetworkCallback() {
 
 
-    private val eventBus = AndroidRxBus.newInstance()
+    private val eventBus = RxBusFactory.create(PublishSubject.create())
     private val applicationContext = context.applicationContext
 
     private val networkRequest = NetworkRequest.Builder()
