@@ -43,6 +43,28 @@ inline fun <T> resultOrError(block : () -> T?) : Response<T, Throwable> {
 
 
 /**
+ * Executes the specified mapper if the current [Response] has a valid result.
+ *
+ * @param mapper the mapper to be executed
+ * @return the mapped value, or null
+ */
+inline fun <I, O> Response<I, Throwable>.mapResult(mapper : (I) -> O) : O? {
+    return this.result?.let(mapper)
+}
+
+
+/**
+ * Executes the specified mapper if the current [Response] has a valid error.
+ *
+ * @param mapper the mapper to be executed
+ * @return the mapped value, or null
+ */
+inline fun <O> Response<*, Throwable>.mapError(mapper : (Throwable) -> O) : O? {
+    return this.error?.let(mapper)
+}
+
+
+/**
  *
  */
 fun <T> T.asResult() : Response<T, Throwable> {

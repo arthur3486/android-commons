@@ -19,22 +19,22 @@ project.ext {
     targetSdk = 29
     minSdk = 18
 
-    supportVersion = "1.1.0-rc01"
-    coreVersion = "1.1.0-rc02"
+    supportVersion = "1.1.0"
+    coreVersion = "1.1.0"
     jUnitVersion = "4.12"
     testRunnerVersion = "1.1.1"
     espressoVersion = "3.1.1"
-    rxJavaVersion = "2.2.11"
+    rxJavaVersion = "2.2.13"
     rxAndroidVersion = "2.1.1"
     rxBusVersion = "1.1.0"
-    retrofitVersion = "2.6.1"
-    okHttpVersion = "4.1.0"
+    retrofitVersion = "2.6.2"
+    okHttpVersion = "4.2.1"
 
     releaseRepoName = "maven"
     releaseUserOrg = "arthurlabs"
     releaseGroupId = "com.arthurivanets.commons"
-    releaseVersion = "0.5.0"
-    releaseVersionCode = 13
+    releaseVersion = "0.5.1"
+    releaseVersionCode = 14
     releaseWebsite = "https://github.com/arthur3486/android-commons"
     releaseLicense = ["Apache-2.0"]
 
